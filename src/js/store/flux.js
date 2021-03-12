@@ -1,6 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
-		store: {
+        
+        store: {
 			//Your data structures, A.K.A Entities
 			contacts: []
 		},
