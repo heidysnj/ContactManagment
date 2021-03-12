@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import MikePhoto from "../../img/m101.jpg";
 import { Context } from "../store/appContext";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const ContactCard = ({ item }) => {
 	const { store, actions } = useContext(Context);
@@ -26,12 +26,12 @@ export const ContactCard = ({ item }) => {
 							</div>
 							<div className="col-12 col-sm-6 col-md-9 text-center text-sm-left">
 								<div className=" float-right">
-									<Link to={"/edit/" + e.id}>
-                                    <button className="btn">
-										<i className="fas fa-pencil-alt mr-3" />
-									</button>
-                                    </Link>
-									<button className="btn" onClick={() => actions.deleteContacts(e.id)}>
+									<Link to={"/edit/" + item.id}>
+										<button className="btn">
+											<i className="fas fa-pencil-alt mr-3" />
+										</button>
+									</Link>
+									<button className="btn" onClick={() => actions.deleteContacts(item.id)}>
 										<i className="fas fa-trash-alt" />
 									</button>
 								</div>
@@ -68,10 +68,10 @@ export const ContactCard = ({ item }) => {
  * your component's properties
  **/
 ContactCard.propTypes = {
-    match: PropTypes.object,
+	match: PropTypes.object,
 	history: PropTypes.object,
 	item: PropTypes.object,
-    onDelete: PropTypes.func
+	onDelete: PropTypes.func
 };
 
 /**
