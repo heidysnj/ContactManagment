@@ -4,13 +4,13 @@ import { Context } from "../store/appContext"
 import PropTypes from "prop-types";
 
 export const EditContact = props => {
-    let short = store.contacts[props.match.params.index];
+    let contact = store.contacts[props.match.params.index];
     let id = props.match.params.id;
     const { actions } = useContext(Context);
-    const [phone, setPhone] = useState(short.phone);
-    const [name, setName] = useState(short.full_name);
-    const [email, setEmail] = useState(short.email);
-    const [address, setAddress] = useState(short.address);
+    const [phone, setPhone] = useState(contact ? contact.phone : "");
+    const [name, setName] = useState(contact ? contact.full_name : "");
+    const [email, setEmail] = useState(contact ? contact.email : "");
+    const [address, setAddress] = useState(contact ? contact.address : "");
     console.log("try", store.contacts);
     return (
         <div className="container">
