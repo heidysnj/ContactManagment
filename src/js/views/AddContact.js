@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+//import Alert from "@material-ui/lab/Alert";
 
 export const AddContact = () => {
 	const { actions } = useContext(Context);
@@ -8,6 +9,28 @@ export const AddContact = () => {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [address, setAddress] = useState("");
+
+	function validateFields() {
+		if (
+			name === "" ||
+			phone === "" ||
+			email === "" ||
+			address === "" ||
+			name === null ||
+			phone === null ||
+			email === null ||
+			address === null
+		) {
+			//<Alert severity="error">Sorry, Empty fields!</Alert>;
+			alert("Empty fields");
+		} else if (isNaN(phone)) {
+			alert("Invalid phone format");
+		} else if (!/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)/.test(email)) {
+			alert("Invalid email format");
+		}
+		return false;
+	}
+
 	return (
 		<div className="container">
 			<div>
@@ -54,6 +77,7 @@ export const AddContact = () => {
 							type="button"
 							className="btn btn-primary form-control"
 							onClick={() => {
+								validateFields();
 								actions.addContact(name, phone, email, address);
 							}}>
 							save

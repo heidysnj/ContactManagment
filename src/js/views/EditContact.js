@@ -18,6 +18,24 @@ export const EditContact = props => {
 	const [email, setEmail] = useState(contact ? contact.email : "");
 	const [address, setAddress] = useState(contact ? contact.address : "");
 
+	function validateFields() {
+		if (
+			name === "" ||
+			phone === "" ||
+			email === "" ||
+			address === "" ||
+			name === null ||
+			phone === null ||
+			email === null ||
+			address === null
+		) {
+			alert("Empty fields");
+		} else if (isNaN(phone)) {
+			alert("Invalid phone format");
+		}
+		return false;
+	}
+
 	return (
 		<div className="container">
 			<div>
@@ -68,6 +86,7 @@ export const EditContact = props => {
 							type="button"
 							className="btn btn-primary form-control"
 							onClick={() => {
+								validateFields();
 								actions.editContacts(id, name, phone, email, address);
 							}}>
 							save
