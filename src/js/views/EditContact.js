@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 
@@ -13,31 +13,37 @@ export const EditContact = props => {
 		}
 	}
 	let contact = store.contacts[ind];
+	let history = useHistory();
 	const [phone, setPhone] = useState(contact ? contact.phone : "");
 	const [name, setName] = useState(contact ? contact.full_name : "");
 	const [email, setEmail] = useState(contact ? contact.email : "");
 	const [address, setAddress] = useState(contact ? contact.address : "");
+	const [validationName, setValidationName] = useState(false);
+	const [validationPhone, setValidationPhone] = useState(false);
+	const [validationEmail, setValidationEmail] = useState(false);
+	const [validationAddress, setValidationAddress] = useState(false);
+	const [validation, setValidation] = useState(false);
 
-	function validateFields() {
-		if (
-			name === "" ||
-			phone === "" ||
-			email === "" ||
-			address === "" ||
-			name === null ||
-			phone === null ||
-			email === null ||
-			address === null
-		) {
-			//<Alert severity="error">Sorry, Empty fields!</Alert>;
-			alert("Sorry, Empty fields");
-		} else if (isNaN(phone)) {
-			alert("Sorry, Invalid phone format");
-		} else if (!/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)/.test(email)) {
-			alert("Sorry, Invalid email format");
+	const checkInput = input => {
+		return input === null || !input;
+	};
+	useEffect(() => {
+		if (!validationName && !validationEmail && !validationPhone && !validationAddress && validation) {
+			actions.editContacts(id, name, phone, email, address);
+			history.push("/");
+			setValidation(false);
+		} else {
+			setValidation(false);
 		}
-		return false;
-	}
+	}, [validation]);
+
+	const fields = e => {
+		if (!name || !phone || !email || !address) {
+			e.preventDefault();
+		} else {
+			actions.editContacts(id, name, phone, email, address);
+		}
+	};
 
 	return (
 		<div className="container">
@@ -48,7 +54,7 @@ export const EditContact = props => {
 						<label>Full Name</label>
 						<input
 							type="text"
-							className="form-control"
+							className={validationName ? "form-control is-invalid" : "form-control"}
 							placeholder="Full Name"
 							value={name}
 							onChange={e => setName(e.target.value)}
@@ -58,7 +64,7 @@ export const EditContact = props => {
 						<label>Email</label>
 						<input
 							type="email"
-							className="form-control"
+							className={validationEmail ? "form-control is-invalid" : "form-control"}
 							placeholder="Enter email"
 							value={email}
 							onChange={e => setEmail(e.target.value)}
@@ -68,7 +74,7 @@ export const EditContact = props => {
 						<label>Phone</label>
 						<input
 							type="phone"
-							className="form-control"
+							className={validationPhone ? "form-control is-invalid" : "form-control"}
 							placeholder="Enter phone"
 							value={phone}
 							onChange={e => setPhone(e.target.value)}
@@ -78,23 +84,26 @@ export const EditContact = props => {
 						<label>Address</label>
 						<input
 							type="text"
-							className="form-control"
+							className={validationAddress ? "form-control is-invalid" : "form-control"}
 							placeholder="Enter address"
 							value={address}
 							onChange={e => setAddress(e.target.value)}
 						/>
 					</div>
-					<Link to={"/"}>
-						<button
-							type="button"
-							className="btn btn-primary form-control"
-							onClick={() => {
-								validateFields();
-								actions.editContacts(id, name, phone, email, address);
-							}}>
-							save
-						</button>
-					</Link>
+
+					<button
+						type="button"
+						className="btn btn-primary form-control"
+						onClick={() => {
+							setValidationName(checkInput(name));
+							setValidationEmail(checkInput(email));
+							setValidationAddress(checkInput(address));
+							setValidationPhone(checkInput(phone));
+							setValidation(true);
+						}}>
+						save
+					</button>
+
 					<Link className="mt-3 w-100 text-center" to="/">
 						or get back to contacts
 					</Link>
