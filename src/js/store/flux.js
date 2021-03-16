@@ -1,7 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			//Your data structures, A.K.A Entities
+			title: false,
 			contacts: []
 		},
 		actions: {
@@ -75,6 +75,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 						})
 						.catch(e => console.error(e));
 				});
+			},
+			updateTitle(bool) {
+				setStore({ title: bool });
 			}
 		}
 	};

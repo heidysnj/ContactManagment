@@ -1,9 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 export const AddContact = () => {
-	const { actions } = useContext(Context);
+	let addContact = "Add a new contact";
+
+	let history = useHistory();
+	const { store, actions } = useContext(Context);
 	const [phone, setPhone] = useState("");
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
@@ -20,13 +23,13 @@ export const AddContact = () => {
 	useEffect(() => {
 		if (!validationName && !validationEmail && !validationPhone && !validationAddress && validation) {
 			actions.addContact(name, phone, email, address);
-			<Link to="/" />;
+			history.push("/");
 			setValidation(false);
 		} else {
 			setValidation(false);
 		}
 	}, [validation]);
-	
+
 	const fields = e => {
 		if (!name || !phone || !email || !address) {
 			e.preventDefault();
@@ -38,7 +41,7 @@ export const AddContact = () => {
 	return (
 		<div className="container">
 			<div>
-				<h1 className="text-center mt-5">Add a new contact</h1>
+				<h1 className="text-center mt-5">{addContact}</h1>
 				<form>
 					<div className="form-group">
 						<label>Full Name</label>
