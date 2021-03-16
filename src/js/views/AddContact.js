@@ -1,7 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
-//import Alert from "@material-ui/lab/Alert";
 
 export const AddContact = () => {
 	const { actions } = useContext(Context);
@@ -9,27 +8,32 @@ export const AddContact = () => {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [address, setAddress] = useState("");
+	const [validationName, setValidationName] = useState(false);
+	const [validationPhone, setValidationPhone] = useState(false);
+	const [validationEmail, setValidationEmail] = useState(false);
+	const [validationAddress, setValidationAddress] = useState(false);
+	const [validation, setValidation] = useState(false);
 
-	function validateFields() {
-		if (
-			name === "" ||
-			phone === "" ||
-			email === "" ||
-			address === "" ||
-			name === null ||
-			phone === null ||
-			email === null ||
-			address === null
-		) {
-			//<Alert severity="error">Sorry, Empty fields!</Alert>;
-			alert("Empty fields");
-		} else if (isNaN(phone)) {
-			alert("Invalid phone format");
-		} else if (!/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)/.test(email)) {
-			alert("Invalid email format");
+	const checkInput = input => {
+		return input === null || !input;
+	};
+	useEffect(() => {
+		if (!validationName && !validationEmail && !validationPhone && !validationAddress && validation) {
+			actions.addContact(name, phone, email, address);
+			<Link to="/" />;
+			setValidation(false);
+		} else {
+			setValidation(false);
 		}
-		return false;
-	}
+	}, [validation]);
+	
+	const fields = e => {
+		if (!name || !phone || !email || !address) {
+			e.preventDefault();
+		} else {
+			actions.addContact(name, phone, email, address);
+		}
+	};
 
 	return (
 		<div className="container">
@@ -40,49 +44,56 @@ export const AddContact = () => {
 						<label>Full Name</label>
 						<input
 							type="text"
-							className="form-control"
+							className={validationName ? "form-control is-invalid" : "form-control"}
 							placeholder="Full Name"
 							onChange={e => setName(e.target.value)}
+							required
 						/>
 					</div>
 					<div className="form-group">
 						<label>Email</label>
 						<input
 							type="email"
-							className="form-control"
+							className={validationEmail ? "form-control is-invalid" : "form-control"}
 							placeholder="Enter email"
 							onChange={e => setEmail(e.target.value)}
+							required
 						/>
 					</div>
 					<div className="form-group">
 						<label>Phone</label>
 						<input
 							type="phone"
-							className="form-control"
+							className={validationPhone ? "form-control is-invalid" : "form-control"}
 							placeholder="Enter phone"
 							onChange={e => setPhone(e.target.value)}
+							required
 						/>
 					</div>
 					<div className="form-group">
 						<label>Address</label>
 						<input
 							type="text"
-							className="form-control"
+							className={validationAddress ? "form-control is-invalid" : "form-control"}
 							placeholder="Enter address"
 							onChange={e => setAddress(e.target.value)}
+							required
 						/>
 					</div>
-					<Link to={"/"}>
-						<button
-							type="button"
-							className="btn btn-primary form-control"
-							onClick={() => {
-								validateFields();
-								actions.addContact(name, phone, email, address);
-							}}>
-							save
-						</button>
-					</Link>
+
+					<button
+						type="button"
+						className="btn btn-primary form-control"
+						onClick={() => {
+							setValidationName(checkInput(name));
+							setValidationEmail(checkInput(email));
+							setValidationAddress(checkInput(address));
+							setValidationPhone(checkInput(phone));
+							setValidation(true);
+						}}>
+						save
+					</button>
+
 					<Link className="mt-3 w-100 text-center" to="/">
 						or get back to contacts
 					</Link>

@@ -29,9 +29,12 @@ export const EditContact = props => {
 			email === null ||
 			address === null
 		) {
-			alert("Empty fields");
+			//<Alert severity="error">Sorry, Empty fields!</Alert>;
+			alert("Sorry, Empty fields");
 		} else if (isNaN(phone)) {
-			alert("Invalid phone format");
+			alert("Sorry, Invalid phone format");
+		} else if (!/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)/.test(email)) {
+			alert("Sorry, Invalid email format");
 		}
 		return false;
 	}
