@@ -4,7 +4,6 @@ import { Context } from "../store/appContext";
 
 export const AddContact = () => {
 	let addContact = "Add a new contact";
-
 	let history = useHistory();
 	const { store, actions } = useContext(Context);
 	const [phone, setPhone] = useState("");
@@ -29,14 +28,6 @@ export const AddContact = () => {
 			setValidation(false);
 		}
 	}, [validation]);
-
-	const fields = e => {
-		if (!name || !phone || !email || !address) {
-			e.preventDefault();
-		} else {
-			actions.addContact(name, phone, email, address);
-		}
-	};
 
 	return (
 		<div className="container">

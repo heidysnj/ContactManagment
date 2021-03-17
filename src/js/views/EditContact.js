@@ -37,11 +37,13 @@ export const EditContact = props => {
 		}
 	}, [validation]);
 
-	const fields = e => {
-		if (!name || !phone || !email || !address) {
-			e.preventDefault();
-		} else {
+	const validateEmail = input => {
+		if (/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)/.test(input)) {
 			actions.editContacts(id, name, phone, email, address);
+			return input === null || !input;
+		} else {
+			alert("Sorry, this email" + " " + input + " " + "is invalid");
+			history.push("/edit/:id");
 		}
 	};
 
@@ -96,7 +98,7 @@ export const EditContact = props => {
 						className="btn btn-primary form-control"
 						onClick={() => {
 							setValidationName(checkInput(name));
-							setValidationEmail(checkInput(email));
+							setValidationEmail(validateEmail(email));
 							setValidationAddress(checkInput(address));
 							setValidationPhone(checkInput(phone));
 							setValidation(true);

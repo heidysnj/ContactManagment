@@ -14,7 +14,7 @@ export const ContactCard = ({ item }) => {
 	return (
 		<li className="list-group-item">
 			{store.contacts &&
-				store.contacts.map((item, index) => {
+				store.contacts.reverse().map((item, index) => {
 					return (
 						<div key={index} className="row w-100">
 							<div className="col-12 col-sm-6 col-md-3 px-0">
